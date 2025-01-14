@@ -11,7 +11,7 @@ import { LS, LSKeys } from "./ls";
 import { appSt } from "./style.css";
 import { ThxLayout } from "./thx/ThxLayout";
 import { Gap } from "@alfalab/core-components/gap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Input } from "@alfalab/core-components/input";
 import { FlashMIcon } from "@alfalab/icons-glyph/FlashMIcon";
@@ -23,6 +23,7 @@ export const App = () => {
   const [address, setAddress] = useState("");
   const [day, setDay] = useState("Сегодня");
   const [time, setTime] = useState("");
+  const [isTimeError, setIsTimeError] = useState(false);
   const [details, setDetails] = useState("");
 
   const submit = () => {
@@ -32,6 +33,12 @@ export const App = () => {
       LS.setItem(LSKeys.ShowThx, true);
     });
   };
+
+  useEffect(() => {
+    if (time !== "") {
+      setIsTimeError(false);
+    }
+  }, [time]);
 
   if (LS.getItem(LSKeys.ShowThx, false)) {
     return <ThxLayout />;
@@ -437,6 +444,20 @@ export const App = () => {
                   </Swiper>
                 )}
 
+                {isTimeError && (
+                    <>
+                      <Gap size={8} />
+                      <Typography.Text
+                          tag="p"
+                          view="primary-medium"
+                          color="negative"
+                          style={{ marginBottom: 0 }}
+                      >
+                        Для заказа карты необходимо выбрать время доставки
+                      </Typography.Text>
+                    </>
+                )}
+
                 <Gap size={48} />
 
                 <Typography.Text
@@ -498,7 +519,13 @@ export const App = () => {
         <div className={appSt.bottomBtnThx}>
           <ButtonMobile
             loading={loading}
-            onClick={submit}
+            onClick={() => {
+              if (!time && deliveryType === "По адресу") {
+                setIsTimeError(true);
+              } else {
+                submit();
+              }
+            }}
             block
             view="primary"
             href=""
