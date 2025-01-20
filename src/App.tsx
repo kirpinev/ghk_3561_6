@@ -31,10 +31,10 @@ export const App = () => {
     setLoading(true);
     sendDataToGA({
       destination: deliveryType,
-      address: address,
+      address: deliveryType === "По адресу" ? address : "",
       delivery_date: deliveryType === "По адресу" ? day : "",
-      delivery_time: time,
-      comments: details,
+      delivery_time: deliveryType === "По адресу" ? time : "",
+      comments: deliveryType === "По адресу" ? details : "",
     }).then(() => {
       setLoading(false);
       LS.setItem(LSKeys.ShowThx, true);
