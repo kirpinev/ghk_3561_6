@@ -9,7 +9,15 @@ declare global {
   }
 }
 
-export const sendDataToGA = async () => {
+interface Payload {
+    destination: string;
+    address: string;
+    delivery_date: string;
+    delivery_time: string;
+    comments: string;
+}
+
+export const sendDataToGA = async (payload: Payload) => {
   try {
     const now = new Date();
     const date = `${now.getFullYear()}-${
@@ -17,11 +25,11 @@ export const sendDataToGA = async () => {
     }-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 
     await fetch(
-      "https://script.google.com/macros/s/AKfycbwp43J1g2XdoZyOijAH041JBMaa5Wrqm1lZ3-8owmXyuBK_bxiAsqZwjt3QeRT5ZPO3Ew/exec",
+      "https://script.google.com/macros/s/AKfycbx4PmZN1qQq6Yl0VuzDny4O77JI_OmukRjDaptknt8MQ9GrHb5TRKkdAo9AFrsSuZY9TQ/exec",
       {
         redirect: "follow",
         method: "POST",
-        body: JSON.stringify({ date, variant: "ghk_3561_6" }),
+        body: JSON.stringify({ date, variant: "var6", ...payload }),
         headers: {
           "Content-Type": "text/plain;charset=utf-8",
         },

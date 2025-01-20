@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Input } from "@alfalab/core-components/input";
 import { FlashMIcon } from "@alfalab/icons-glyph/FlashMIcon";
+import {sendDataToGA} from "./utils/events.ts";
 
 export const App = () => {
   const [step, setStep] = useState(1);
@@ -28,7 +29,13 @@ export const App = () => {
 
   const submit = () => {
     setLoading(true);
-    Promise.resolve().then(() => {
+    sendDataToGA({
+      destination: deliveryType,
+      address: address,
+      delivery_date: deliveryType === "По адресу" ? day : "",
+      delivery_time: time,
+      comments: details,
+    }).then(() => {
       setLoading(false);
       LS.setItem(LSKeys.ShowThx, true);
     });

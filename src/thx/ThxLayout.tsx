@@ -3,12 +3,6 @@ import moai from "../assets/moai.png";
 import { thxSt } from "./style.css";
 
 export const ThxLayout = () => {
-  // const clickSuccess = () => {
-  //   window.gtag("event", "3505_ok_click", {
-  //     variant_name: "ghk_3561_6",
-  //   });
-  // };
-
   return (
     <>
       <div className={thxSt.container}>
